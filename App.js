@@ -26,7 +26,7 @@ export default function App() {
           style: 'cancel'
         },
         {
-          text: 'Delete', 
+          text: 'Delete',
           onPress: () => {
             setTodoId(null)
             setTodos(prev => prev.filter(todo => todo.id !== id))
@@ -35,6 +35,15 @@ export default function App() {
       ],
       { cancelable: false },
     )
+  }
+
+  const updateTodo = (id, title) => {
+    setTodos(old => old.map(todo => {
+      if (todo.id === id) {
+        todo.title = title
+      }
+      return todo
+    }))
   }
 
   let content = (
@@ -50,7 +59,9 @@ export default function App() {
     content = <TodoScreen
       goBack={() => setTodoId(null)}
       todo={selectedTodo}
-      onRemove={removeTodo} />
+      onRemove={removeTodo}
+      onSave={updateTodo}
+    />
   }
 
   return (
