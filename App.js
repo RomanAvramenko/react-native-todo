@@ -1,15 +1,37 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, FlatList, Alert } from 'react-native'
+import { StyleSheet, View, Alert } from 'react-native'
+import * as Font from 'expo-font'
+import { AppLoading } from 'expo'
+
 import { Navbar } from './src/components/Navbar'
 import { MainScreen } from './src/screens/MainScreen'
 import { TodoScreen } from './src/screens/TodoScreen'
+import { THEME } from './src/theme'
+
+async function loadApplication() {
+  await Font.loadAsync({
+    'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
+    'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf')
+  })
+}
 
 export default function App() {
+  const [isReady, setIsReady] = useState(false)
   const [todoId, setTodoId] = useState('2')
   const [todos, setTodos] = useState([
     { id: '1', title: 'test' },
     { id: '2', title: 'test2' }
   ])
+
+  if (!isReady) {
+    return (
+      <AppLoading
+        startAsync={loadApplication}
+        onError={err => console.log(err)}
+        onFinish={() => setIsReady(true)}
+      />
+    )
+  }
 
   const addTodo = title => {
     setTodos(prev => [...prev, { id: Date.now().toString(), title }])
@@ -74,7 +96,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 30,
+    paddingHorizontal: THEME.PADDING_HORIZONTAL,
     paddingVertical: 20
   }
 })

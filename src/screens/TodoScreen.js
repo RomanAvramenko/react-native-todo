@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, Button } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
+import { FontAwesome, AntDesign } from '@expo/vector-icons'
 import { THEME } from '../theme'
 import { AppCard } from '../components/ui/AppCard'
 import { EditModal } from '../components/EditModal'
+import { AppTextBold } from '../components/ui/AppTextBold'
+import { AppButton } from '../components/ui/AppButton'
 
 export const TodoScreen = ({ goBack, todo, onRemove, onSave }) => {
   const [modal, setModal] = useState(false)
@@ -21,22 +24,26 @@ export const TodoScreen = ({ goBack, todo, onRemove, onSave }) => {
         onSave={saveHandler}
       />
       <AppCard style={styles.card}>
-        <Text style={styles.title}>{todo.title}</Text>
-        <Button title='Change' onPress={() => setModal(true)} />
+        <AppTextBold style={styles.title}>{todo.title}</AppTextBold>
+        <AppButton title='Change' onPress={() => setModal(true)}>
+          <FontAwesome name='edit' size={20} />
+        </AppButton>
       </AppCard>
 
       <View style={styles.buttons}>
         <View style={styles.button}>
-          <Button
-            title="Go back"
+          <AppButton
             color={THEME.GREY_COLOR}
-            onPress={goBack} />
+            onPress={goBack} >
+            <AntDesign name='back' size={20} color='#fff' />
+          </AppButton>
         </View>
         <View style={styles.button}>
-          <Button
-            title="Delete"
+          <AppButton
             color={THEME.DANGER_COLOR}
-            onPress={() => onRemove(todo.id)} />
+            onPress={() => onRemove(todo.id)} >
+            <FontAwesome name='remove' size={20} color='#fff' />
+          </AppButton>
         </View>
       </View>
     </View>
@@ -53,7 +60,8 @@ const styles = StyleSheet.create({
     padding: 15
   },
   button: {
-    width: '45%'
+    //width: Dimensions.get('window').width / 3
+    width: Dimensions.get('window').width > 400 ? 150 : 100
   },
   title: {
     fontSize: 20
